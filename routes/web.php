@@ -12,9 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('front.home.index');
 });
-
+Route::get('/action', function () {
+    return view('front.action.index');
+});
+Route::get('/services', function(){
+    return view("front.services.index");
+});
 Auth::routes();
 Route::resource("/admin/citation","CitationController");
 Route::resource('/admin/inscription','InscriptionController');

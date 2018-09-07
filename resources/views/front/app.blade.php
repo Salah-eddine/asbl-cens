@@ -1,0 +1,7 @@
+@include("layout.debutDuHead")
+    @include("layout.preloader")
+    @include("front.home.partials.top-logo")
+    @include("front.home.partials.header")  
+    @yield("content")
+    @include("layout.footer")
+@include("layout.finDuHead")

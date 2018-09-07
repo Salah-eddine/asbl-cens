@@ -1,0 +1,974 @@
+<!doctype html>
+<html ng-app="visualBuilder">
+	<head>
+		<title>Visual builder</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- template styles -->
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/fonts.css">
+		<link rel="stylesheet" href="css/main.css" id="color-switcher-link">
+		<!-- builder styles -->
+		<link rel="stylesheet" href="builder/css/jquery.scrollbar.css">
+		<link rel="stylesheet" href="builder/css/dropzone.css">
+		<link rel="stylesheet" href="builder/css/builder.css">
+		<script src="js/vendor/modernizr-2.6.2.min.js"></script>
+
+	</head>	
+
+	<body ng-controller="ConfigCtrl" ng-class="tinymce">
+
+<div class="preloader">
+	<div class="preloader_image"></div>
+</div>
+
+<div id="modals">
+	
+
+
+	<!-- Common Message -->
+	<div class="modal fade" id="commonMessage" tabindex="-1" role="dialog" aria-labelledby="commonMessageLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="commonMessageLabel">Message</h4>
+				</div>
+				<div class="modal-body">
+
+					<div ng-bind-html="message"></div>
+
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Common Message -->
+	<div class="modal fade" id="importProject" tabindex="-1" role="dialog" aria-labelledby="importProjectLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="importProjectLabel">Message</h4>
+				</div>
+				<div class="modal-body">
+					
+					<p>This will replace all of your saved pages and sections!</p>
+					<div class="form-group">
+						<p class="help-block">Please provide previous saved project file (ZIP or manual saved file):</p>
+						<label for="projectFile">Project File</label>
+						<input type="file" id="projectFile">
+						
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_highlight" data-dismiss="modal" ng-click="importProject()"><i class="rt-icon2-tick-outline"></i> Ok</button>
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Common Dialog -->
+	<div class="modal fade" id="commonDelete" tabindex="-1" role="dialog" aria-labelledby="commonDeleteLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="commonDeleteLabel">Confirmation</h4>
+				</div>
+				<div class="modal-body">
+
+					<div ng-bind-html="message"></div>
+
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_highlight" data-dismiss="modal" ng-click="deleteSaved('','','',false)"><i class="rt-icon2-tick-outline"></i> Ok</button>
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Cancel</button>
+					</div>
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Delete Section Dialog -->
+	<div class="modal fade" id="deleteSection" tabindex="-1" role="dialog" aria-labelledby="deleteSectionLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="deleteSectionLabel">Delete section?</h4>
+				</div>
+				<div class="modal-body">
+
+					<p>Are you sure you want to delete section?</p>
+
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_highlight" data-dismiss="modal" ng-click="deleteSection(false)"><i class="rt-icon2-tick-outline"></i> Delete section</button>
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Cancel</button>
+					</div>
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Delete Column Dialog -->
+	<div class="modal fade" id="deleteColumn" tabindex="-1" role="dialog" aria-labelledby="deleteColumnLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="deleteColumnLabel">Delete column?</h4>
+				</div>
+				<div class="modal-body">
+
+					<p>Are you sure you want to delete column?</p>
+
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_highlight" data-dismiss="modal" ng-click="deleteColumn(false)"><i class="rt-icon2-tick-outline"></i> Delete column</button>
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Cancel</button>
+					</div>
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Get Page Code -->
+	<div class="modal fade" id="getPageCode" tabindex="-1" role="dialog" aria-labelledby="getPageCodeLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="getPageCodeLabel">Save following code in your siteroot HTML file</h4>
+				</div>
+				<div class="modal-body">
+
+					<textarea class="form-control" ng-model="pagecode" rows="20"></textarea>
+					
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Get Project Code -->
+	<div class="modal fade" id="getProjectCode" tabindex="-1" role="dialog" aria-labelledby="getProjectCodeLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="getProjectCodeLabel">Save following code in project file</h4>
+				</div>
+				<div class="modal-body">
+
+					<textarea class="form-control" ng-model="Projectcode" rows="20"></textarea>
+					
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Edit Page Dialog -->
+	<div class="modal fade" id="editPage" tabindex="-1" role="dialog" aria-labelledby="editPageLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="editPageLabel">Confirmation</h4>
+				</div>
+				<div class="modal-body">
+						
+					{{message}}
+					
+					
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_highlight" data-dismiss="modal" ng-click="editPage(editingPageTemp, false)"><i class="rt-icon2-tick-outline"></i> Ok</button>
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Cancel</button>
+					</div>
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Get Section ID if not set for save in localstorage -->
+	<div class="modal fade" id="getSectionId" tabindex="-1" role="dialog" aria-labelledby="getSectionIdLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="getSectionIdLabel">Provide section ID</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="sectionIdInput">Section ID attribute</label>
+						<input type="text" class="form-control" id="sectionIdInput" ng-model="sectionid" placeholder="section ID attribute" required>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_highlight" ng-click="saveSectionWithoutId(sectionid)"><i class="rt-icon2-tick-outline"></i> Save Section</button>
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Get Page title and Page name for save Page in localstorage -->
+	<div class="modal fade" id="getPageName" tabindex="-1" role="dialog" aria-labelledby="getPageNameLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="getPageNameLabel">Provide Page Title and Page Name</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="pageTitleInput">Page Title Tag</label>
+
+						<input type="text" id="pageTitleInput" class="form-control" required ng-model="pagetitle" placeholder="Page Title">
+					</div>
+					<div class="form-group">
+						<label for="pageNameInput">Page Name (filename)</label>
+						<br>
+						<input type="text" id="pageNameInput" class="form-control inline-block" required ng-model="pagename" placeholder="Page Name">
+
+						<strong>.html</strong>
+
+					</div>
+
+					<div class="modal-footer">
+						<button type="submit" class="builder_btn btn_highlight" ng-click="savePage(pagename, pagetitle)"><i class="rt-icon2-tick-outline"></i> Save Page</button>
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- editSection -->
+	<div class="modal fade" id="editSection" tabindex="-1" role="dialog" aria-labelledby="editSectionLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="editSectionLabel">New section's parameters</h4>
+				</div>
+				<div class="modal-body">
+
+					<div class="selects">
+						<div ng-repeat="(selectKey, select) in config['Grid Elements'].section.selects" class="form-group">
+							<h5 class="option-name">{{ select.name }}</h5>
+							<select selectpicker="{style: 'sidebar-form-control', dropupAuto: false}" id="{{select.id}}" ng-model="select.choosen" ng-options="key as value for (key, value) in select.values"></select>
+						</div>
+					</div>
+					<!-- eof selects -->
+
+					<div class="checkboxes">
+						<div ng-repeat="checkbox in config['Grid Elements'].section.checkboxes">
+							<div class="checkbox checkbox-slider--b-flat">
+								<label>
+									<input type="checkbox" value="{{checkbox.value}}" id="{{checkbox.id}}" ng-model="checkbox.choosen"> <span>{{ checkbox.name }}</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<!-- eof checkboxes -->
+
+					<div class="inputs">
+						<div ng-repeat="input in config['Grid Elements'].section.inputs">
+							<div class="form-group">
+								<label for="{{input.id}}">{{input.name}}</label>
+								<input type="text" class="sidebar-form-control" id="{{input.id}}" placeholder="" value="" ng-model="input.entered">
+
+							</div>										
+						</div>
+					</div>
+					<!-- eof inputs -->
+
+
+					<div class="visuals">
+						<div ng-repeat="(visualKey, visualButton) in config['Grid Elements'].section.visuals" ng-class="$last? 'visual-last': ''">
+							<a href="#" class="builder_btn btn_block" 
+								ng-class-odd="'btn_highlight'" 
+								ng-class-even="'btn_light'" 
+								ng-click="visualSelect(config['Grid Elements'].section, visualKey);">
+									<i class="rt-icon2-edit"></i> Select {{visualButton.name}}
+							</a>
+								
+						</div>
+					</div>
+					<!-- eof visuals -->
+
+					<div class="images-selects">
+						<div ng-repeat="(imagesKey, imageButton) in config['Grid Elements'].section.images" ng-class="$last? 'image-last': ''">
+							<a href="#" class="builder_btn btn_block" 
+								ng-class-odd="'btn_highlight'" 
+								ng-class-even="'btn_light'" 
+								ng-click="imageSelect(config['Grid Elements'].section, imagesKey);">
+									<i class="rt-icon2-edit"></i> Select {{imageButton.name}}
+							</a>
+								
+						</div>
+					</div>
+					<!-- eof visuals -->
+
+
+					<div class="repeats">
+						<div ng-repeat="repeat in config['Grid Elements'].section.repeats">
+							<div class="form-group">
+								<label for="{{repeat.id}}">{{repeat.name}}</label>
+								<div class="lh1">
+									<button type="number" 
+										class="builder_btn btn_highlight" 
+										ng-click="repeat.entered = repeat.entered - 1">
+										-
+									</button>
+
+									<input type="number" 
+										class="sidebar-form-control ib" 
+										min="1" 
+										max="10" 
+										id="{{repeat.id}}" 
+										placeholder="{{repeat.name}}" 
+										value="" 
+										ng-model="repeat.entered">
+
+									<button type="number" 
+										class="builder_btn btn_highlight" 
+										ng-click="repeat.entered = repeat.entered + 1">
+										+
+									</button>
+									
+								</div>
+								
+							</div>										
+						</div>
+					</div>
+					<!-- eof repeats -->
+
+
+					<div class="modal-footer">		
+						<button type="button" class="builder_btn btn_highlight" 
+							data-layout="{{ config['Grid Elements'].section.toInsert }}"
+							ng-mouseenter="generateElement(config['Grid Elements'].section);"
+							ng-click="updateSection($event);">
+							<i class="rt-icon2-tick-outline"></i> Apply new params to section
+						</button>
+
+
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- editColumn -->
+	<div class="modal fade" id="editColumn" tabindex="-1" role="dialog" aria-labelledby="editColumnLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="editColumnLabel">New column's parameters</h4>
+				</div>
+				<div class="modal-body">
+
+
+					<div class="selects">
+						<div ng-repeat="(selectKey, select) in config['Grid Elements'].columns.selects" class="form-group">
+							<h5 class="option-name">{{ select.name }}</h5>
+							<select selectpicker="{style: 'sidebar-form-control', dropupAuto: false}" id="{{select.id}}" ng-model="select.choosen" ng-options="key as value for (key, value) in select.values"></select>
+						</div>
+					</div>
+					<!-- eof selects -->
+
+					<div class="checkboxes">
+						<div ng-repeat="checkbox in config['Grid Elements'].columns.checkboxes">
+							<div class="checkbox checkbox-slider--b-flat">
+								<label>
+									<input type="checkbox" value="{{checkbox.value}}" id="{{checkbox.id}}" ng-model="checkbox.choosen"> <span>{{ checkbox.name }}</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<!-- eof checkboxes -->
+
+					<div class="inputs">
+						<div ng-repeat="input in config['Grid Elements'].columns.inputs">
+							<div class="form-group">
+								<label for="{{input.id}}">{{input.name}}</label>
+								<input type="text" class="sidebar-form-control" id="{{input.id}}" placeholder="" value="" ng-model="input.entered">
+
+							</div>										
+						</div>
+					</div>
+					<!-- eof inputs -->
+
+
+					<div class="visuals">
+						<div ng-repeat="(visualKey, visualButton) in config['Grid Elements'].columns.visuals" ng-class="$last? 'visual-last': ''">
+							<a href="#" class="builder_btn btn_block" 
+								ng-class-odd="'btn_highlight'" 
+								ng-class-even="'btn_light'" 
+								ng-click="visualSelect(config['Grid Elements'].section, visualKey);">
+									<i class="rt-icon2-edit"></i> Select {{visualButton.name}}
+							</a>
+								
+						</div>
+					</div>
+					<!-- eof visuals -->
+
+					<div class="images-selects">
+						<div ng-repeat="(imagesKey, imageButton) in config['Grid Elements'].columns.images" ng-class="$last? 'image-last': ''">
+							<a href="#" class="builder_btn btn_block" 
+								ng-class-odd="'btn_highlight'" 
+								ng-class-even="'btn_light'" 
+								ng-click="imageSelect(config['Grid Elements'].section, imagesKey);">
+									<i class="rt-icon2-edit"></i> Select {{imageButton.name}}
+							</a>
+								
+						</div>
+					</div>
+					<!-- eof visuals -->
+
+
+					<div class="repeats">
+						<div ng-repeat="repeat in config['Grid Elements'].columns.repeats">
+							<div class="form-group">
+								<label for="{{repeat.id}}">{{repeat.name}}</label>
+								<div class="lh1">
+									<button type="number" 
+										class="builder_btn btn_highlight" 
+										ng-click="repeat.entered = repeat.entered - 1">
+										-
+									</button>
+
+									<input type="number" 
+										class="sidebar-form-control ib" 
+										min="1" 
+										max="10" 
+										id="{{repeat.id}}" 
+										placeholder="{{repeat.name}}" 
+										value="" 
+										ng-model="repeat.entered">
+
+									<button type="number" 
+										class="builder_btn btn_highlight" 
+										ng-click="repeat.entered = repeat.entered + 1">
+										+
+									</button>
+									
+								</div>
+								
+							</div>										
+						</div>
+					</div>
+					<!-- eof repeats -->
+
+							
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_highlight" 
+							data-layout="{{ config['Grid Elements'].columns.toInsert }}"
+							ng-mouseenter="generateElement(config['Grid Elements'].columns);"
+							ng-click="updateColumn($event);">
+							<i class="rt-icon2-tick-outline"></i> Apply new params to column
+						</button>
+
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Visual Select -->
+	<div class="modal fade" id="visualSelect" tabindex="-1" role="dialog" aria-labelledby="visualSelectLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="visualSelectLabel">Select element</h4>
+				</div>
+				<div class="modal-body">
+
+					<span class="visual-element" ng-repeat="element in visualSelectingBlock.visuals[visualSelectingBlockGroupKey].elements track by $index" ng-click="selectVisualElement(visualSelectingBlock, visualSelectingBlockGroupKey, $index);">
+						
+						<span ng-bind-html="element"></span>
+
+					</span>
+
+						
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Visual Image Select Modal -->
+	<div class="modal fade" id="visualImageSelect" tabindex="-1" role="dialog" aria-labelledby="visualImageSelectLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"><i class="rt-icon2-times-outline"></i></span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="visualImageSelectLabel">Select Image</h4>
+				</div>
+				<div class="modal-body">
+
+					<div class="upload-images-form">
+						<form action="builder/upload.php" class="dropzone" ng-dropzone dropzone="dropzone" dropzone-config="dropzoneConfig">
+							<div class="dz-message"><i class="rt-icon2-cross"></i>Drag your images here</div>
+						</form>
+						<!-- <form action="builder/upload.php" class="dropzone" id="uploadimage"></form> -->
+					</div>
+
+					<span class="image-visual-select" ng-repeat="(imageKey, imageSrc) in visualSelectingImageBlock.images[visualSelectingBlockImagesKey].values track by $index" ng-click="selectImage(visualSelectingImageBlock, visualSelectingBlockImagesKey, imageKey);">
+						
+						<img ng-src="{{imageSrc}}" title="{{imageSrc}}">
+
+					</span>
+
+					<!-- 
+						<span ng-bind-html="element"></span> 
+						{{visualSelectingImageBlock.images[visualSelectingBlockImagesKey].values}}
+						{{templateImages}}
+					-->
+						
+					<div class="modal-footer">
+						<button type="button" class="builder_btn btn_light" data-dismiss="modal"><i class="rt-icon2-times-outline"></i> Close</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div><!--eof #modals-->
+
+<div id="controls" class="ls ms" ng-cloak>
+	<!-- Controls -->
+	<div class="dropdown">
+		Editing:&nbsp;
+		<a id="pages_operations" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			<i class="rt-icon2-document2"></i>  {{ editingPage }}
+				<span ng-switch="editingPage == 'untitled'">
+					<span ng-switch-when="false">
+						.html
+					</span>
+				</span>
+			<i class="rt-icon2-chevron-small-down"></i>
+		</a>
+
+		<ul class="dropdown-menu" aria-labelledby="pages_operations">
+			<li>
+				<a href="#" data-toggle="modal" ng-click="savePage(editingPage, true)"><i class="rt-icon2-cross"></i> Save </a>
+			</li>
+			<li id="save_page_as">
+				<a href="#" data-toggle="modal" data-target="#getPageName"><span class="rt-icon2-pen2"></span> Save As...</a>
+			</li>
+
+			
+			<li class="text-divider">
+				<span ng-if="!pagesLength">No</span>
+				Saved Pages
+			</li>
+			
+			<li ng-repeat="(pageId, page) in $storage.pages">
+				<a href="#" ng-click="editPage(pageId, true)">
+					<i class="rt-icon2-document2"></i>
+					{{ pageId }}.html
+				</a>
+			</li>
+
+		</ul>					
+		
+	</div>
+
+	<div id="modes">
+
+		<div class="radio radio-info radio-inline">
+			<input type="radio" ng-model="tinymce" value="dragndrop" id="mode-dragndrop">
+			<label class="radio-inline" for="mode-dragndrop">Drag'n'Drop</label>
+			<span class="question" data-toggle="tooltip" data-placement="bottom" title="In this mode you can drag elements from left menu to canvas to build your page">?</span>
+		</div>
+
+
+		<div class="radio radio-info radio-inline">
+			<input type="radio" ng-model="tinymce" value="tinymce" id="mode-contentedit">
+			<label class="radio-inline" for="mode-contentedit">Content Edit</label>
+			<span class="question" data-toggle="tooltip" data-placement="bottom" title="In this mode you can edit columns content. Just double click on any column">?</span>
+		</div>
+	
+
+		<label class="radio-inline checkbox-slider--b-flat">
+			<input type="checkbox" value="grid" checked ng-model="grid"> <span>Show Grid</span>
+		</label>
+		
+	</div>
+
+	<div id="trash" class="builder_btn btn_highlight">
+		<i class="rt-icon2-trash3"></i> Trash
+	</div>
+
+	<div class="dropdown">
+		<a id="builder_operations" data-target="#" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="builder_btn btn_light">
+			<i class="rt-icon2-spanner-outline"></i> Actions
+			<i class="rt-icon2-chevron-small-down"></i>
+		</a>
+
+		<ul class="dropdown-menu" aria-labelledby="builder_operations">
+			<li id="save_page">
+				<a href="#" data-toggle="modal" data-target="#getPageName">
+					<i class="rt-icon2-cross"></i> Save Page
+				</a>
+			</li>
+			<li id="getcode">
+				<a href="#" ng-click="getPageCode();">
+					<i class="rt-icon2-edit"></i> Get Page Code</a>
+			</li>
+
+			<li>
+				<a href="#" ng-click="exportProject();"><span class="rt-icon2-out"></span> Export Project</a>
+			</li>
+			<li>
+				<a href="#" data-toggle="modal" data-target="#importProject"><span class="rt-icon2-in"></span> Import Project</a>
+			</li>
+			
+			<li class="text-divider">Requires PHP:</li>
+			<li id="preview">
+				<a href="#" ng-click="pagePreview();">
+					<span class="rt-icon2-zoom"></span> Preview
+				</a>
+			</li>
+			<li id="generate_html">
+				<a href="#" ng-click="generateFiles();">
+					<span class="rt-icon2-code-outline"></span> Create Pages
+				</a>
+			</li>
+			<li id="get_zip">
+				<a href="#" ng-click="generateZip();">
+					<span class="rt-icon2-download-outline"></span> Get ZIP
+				</a>
+			</li>
+
+		</ul>
+	</div>
+</div>
+
+<!-- <div id="sidebar" ng-mouseleave="activateGroup(-1)"> -->
+<div id="sidebar">
+	<div id="sidebaricon" ng-click="toggleSidebar()">
+		<i class="rt-icon2-cog-outline"></i>
+		<i class="rt-icon2-times-outline"></i>
+	</div>
+	<div class="left scrollbar-macosx" ng-cloak>
+		<h2>Elements</h2>
+		<ul id="available-blocks" class="list-unstyled">
+			
+			<li id="options-{{$index}}" ng-repeat="(groupKey, group) in config" ng-class="$first && $last ? 'li-first li-last' : ($first ? 'li-first' : ($last ? 'li-last' : 'li-middle'))">
+				<h3 ng-click="activateGroup('dragndrop-' + $index)"
+					ng-class="{ 'group-header-active': 'dragndrop-'+$index == selectedGroupIndex }"
+				>
+					{{ groupKey }}
+				</h3>
+
+				<div class="selected-group-options" 
+					ng-class="{ 'group-active': 'dragndrop-' + $index == selectedGroupIndex }"
+				>
+					<div class="right scrollbar-macosx">
+						<div ng-repeat="(blockKey, block) in group" class="drag-element-otions">
+							<h4 class="group-name"> 
+								{{ block.name }}
+								<span>
+									<span class="question" data-toggle="tooltip" data-placement="bottom" title="{{ block.description }}">?</span>
+								</span>
+							</h4>
+							
+							<div class="selected-block-options">
+
+								<div class="selects">
+									<div ng-repeat="(selectKey, select) in block.selects" class="form-group">
+										<h5 class="option-name">{{ select.name }}</h5>
+										<select selectpicker="{style: 'sidebar-form-control', dropupAuto: false}" id="{{select.id}}" ng-model="select.choosen" ng-options="key as value for (key, value) in select.values"></select>
+									</div>
+								</div>
+								<!-- eof selects -->
+
+								<div class="checkboxes">
+									<div ng-repeat="checkbox in block.checkboxes">
+										<div class="checkbox checkbox-slider--b-flat">
+											<label>
+												<input type="checkbox" value="{{checkbox.value}}" id="{{checkbox.id}}" ng-model="checkbox.choosen"> <span>{{ checkbox.name }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<!-- eof checkboxes -->
+
+								<div class="inputs">
+									<div ng-repeat="input in block.inputs">
+										<div class="form-group">
+											<label for="{{input.id}}">{{input.name}}</label>
+											<input type="text" class="sidebar-form-control" id="{{input.id}}" placeholder="" value="" ng-model="input.entered">
+
+										</div>										
+									</div>
+								</div>
+								<!-- eof inputs -->
+
+
+								<div class="visuals">
+									<div ng-repeat="(visualKey, visualButton) in block.visuals" ng-class="$last? 'visual-last': ''">
+										<a href="#" class="builder_btn btn_block" 
+											ng-class-odd="'btn_highlight'" 
+											ng-class-even="'btn_light'" 
+											ng-click="visualSelect(block, visualKey);">
+												<i class="rt-icon2-edit"></i> Select {{visualButton.name}}
+										</a>
+											
+									</div>
+								</div>
+								<!-- eof visuals -->
+
+								<div class="images-selects">
+									<div ng-repeat="(imagesKey, imageButton) in block.images" ng-class="$last? 'image-last': ''">
+										<a href="#" class="builder_btn btn_block" 
+											ng-class-odd="'btn_highlight'" 
+											ng-class-even="'btn_light'" 
+											ng-click="imageSelect(block, imagesKey);">
+												<i class="rt-icon2-edit"></i> Select {{imageButton.name}}
+										</a>
+											
+									</div>
+								</div>
+								<!-- eof visuals -->
+
+
+								<div class="repeats">
+									<div ng-repeat="repeat in block.repeats">
+										<div class="form-group">
+											<label for="{{repeat.id}}">{{repeat.name}}</label>
+											<div class="lh1">
+												<button type="number" 
+													class="builder_btn btn_highlight" 
+													ng-click="repeat.entered = repeat.entered - 1">
+													-
+												</button>
+
+												<input type="number" 
+													class="sidebar-form-control ib" 
+													min="1" 
+													max="10" 
+													id="{{repeat.id}}" 
+													placeholder="{{repeat.name}}" 
+													value="" 
+													ng-model="repeat.entered">
+
+												<button type="number" 
+													class="builder_btn btn_highlight" 
+													ng-click="repeat.entered = repeat.entered + 1">
+													+
+												</button>
+												
+											</div>
+											
+										</div>										
+									</div>
+								</div>
+								<!-- eof repeats -->
+
+								<div class="drag-element" 
+									data-connect="{{ block.parents }}" 
+									data-layout="{{ block.toInsert }}"
+									ng-mouseenter="generateElement(block);"
+									ng-mousedown="toggleSidebar();"
+
+								>
+									<img ng-src="{{ block.image ? block.image : 'builder/img/noicon.png' }}" alt="">
+								</div>
+
+							</div>
+							
+						</div><!--eof block repeat-->
+					</div><!--eof right scrollbar-->
+
+				</div><!--eof selected-group-options-->
+				
+			</li>
+
+		</ul>
+
+		<h2>
+			<span ng-if="!sectionsLength">No</span>
+			Saved Sections
+		</h2>
+
+		<ul id="sections" class="list-unstyled">
+			<li id="options-sections-{{$index}}" ng-repeat="(sectionId, section) in $storage.sections" ng-class="$first && $last ? 'li-first li-last' : ($first ? 'li-first' : ($last ? 'li-last' : 'li-middle'))">
+				<h3 class="section-name" ng-click="activateGroup('section-'+ $index)"
+					ng-class="{ 'group-header-active': 'section-'+$index == selectedGroupIndex }"
+				>
+					#{{ sectionId }}
+				</h3>
+
+				<div class="selected-group-options" 
+					ng-class="{ 'group-active': 'section-'+$index == selectedGroupIndex }"
+				>
+					<h4 class="group-name"> 
+						#{{ sectionId }}
+					</h4>
+					<div class="selected-block-options">
+
+						<div class="drag-element" 
+							data-connect="#box_wrapper" 
+							data-layout="{{ section }}"
+							ng-mousedown="toggleSidebar();"
+						>
+							<img src="builder/img/noicon.png" alt="">
+						</div>
+
+						<a href="#" class="builder_btn btn_highlight btn_block" ng-click="deleteSaved('sections', sectionId, 'Are you sure you want to delete section ', true);"><i class="rt-icon2-document-delete"></i> Delete Section</a>
+
+					</div>
+
+				</div>
+				
+			</li>
+		</ul>
+		
+		<h2>
+			<span ng-if="!pagesLength">No</span>
+			 Saved Pages
+		</h2>
+
+		<ul id="pages" class="list-unstyled">
+			<li id="options-pages-{{$index}}" ng-repeat="(pageId, page) in $storage.pages" ng-class="$first && $last ? 'li-first li-last' : ($first ? 'li-first' : ($last ? 'li-last' : 'li-middle'))">
+				<h3 class="page-name" ng-click="activateGroup('page-'+ $index)"
+					ng-class="{ 'group-header-active': 'page-'+$index == selectedGroupIndex }"
+				>
+					{{ pageId }}.html
+				</h3>
+
+				<div class="selected-group-options" 
+					ng-class="{ 'group-active': 'page-'+$index == selectedGroupIndex }"
+				>
+					<h4 class="group-name"> 
+						{{ pageId }}.html
+					</h4>
+					<div class="selected-block-options">
+
+						<a href="#" class="builder_btn btn_light btn_block" ng-click="editPage(pageId, true)"><i class="rt-icon2-edit"></i> Edit Page</a href="#">
+						
+						<a href="#" class="builder_btn btn_highlight btn_block" ng-click="deleteSaved('pages', pageId, 'Are you sure you want to delete page ', true);"><i class="rt-icon2-document-delete"></i>Delete Page</a>
+					
+
+					</div>
+
+				</div>
+				
+			</li>
+		</ul>
+
+		<h2>Project</h2>
+
+		<ul class="bottom_operation list-unstyled">
+			<li id="bottom_export">
+				<a href="#" ng-click="exportProject();" class="builder_btn btn_highlight btn_block"><span class="rt-icon2-out"></span> Export</a>
+			</li>
+			<li id="bottom_import">
+				<a href="#" data-toggle="modal" data-target="#importProject" class="builder_btn btn_dark btn_block"><span class="rt-icon2-in"></span> Import</a>
+			</li>
+		</ul>
+		
+		<h2 class="no-bg">Requires PHP:</h2>
+
+		<ul class="bottom_operation list-unstyled">
+			<li id="bottom_preview">
+				<a href="#" ng-click="pagePreview();" class="builder_btn btn_highlight btn_block"><span class="rt-icon2-zoom"></span> Preview</a>
+			</li>
+			<li id="bottom_generate_html">
+				<a href="#" ng-click="generateFiles();" class="builder_btn btn_light btn_block"><span class="rt-icon2-code-outline"></span> Create Pages</a>
+			</li>
+			<li id="bottom_get_zip">
+				<a href="#" ng-click="generateZip();" class="builder_btn btn_dark btn_block"><span class="rt-icon2-download-outline"></span> Get ZIP</a>
+			</li>
+		</ul>
+	</div><!--eof scrollbar-->
+</div>
+<!-- eof menu -->
+
+
+<div id="canvas_wrapper" ng-class="{ 'grid' : grid }"><div id="canvas_wrapper_dots"></div>
+<div id="canvas">
+	<div id="box_wrapper">
+
+
+
+	</div><!-- eof #box_wrapper -->
+</div><!-- eof #canvas -->
+</div><!-- eof #canvas_wrapper -->
+
+
+
+		<!-- libs -->
+		
+		<script src="js/vendor/jquery-2.2.4.min.js"></script>
+		<script src="builder/js/jquery-ui.min.js"></script>
+		<script src="js/vendor/bootstrap.min.js"></script>
+		<script src="builder/js/bootstrap-select.min.js"></script>
+		<script src="builder/js/dropzone.js"></script>
+		<script src="builder/js/angular.min.js"></script>
+		<script src="builder/js/angular.ngStorage.min.js"></script>
+		<script src="builder/js/angular-sanitize.min.js"></script>
+		<script src="builder/js/angular-bootstrap-select.js"></script>
+		<script src="builder/js/angular-dropzone.js"></script>
+		<script src="builder/js/jquery.scrollbar.min.js"></script>
+
+		<!-- TinyMCE editor -->
+		<script src="builder/js/tinymce/tinymce.min.js"></script>
+		<script src="builder/js/tinymce/jquery.tinymce.min.js"></script> 
+		
+		<!-- main script -->
+		<script src="builder/js/builder.js"></script>
+		
+
+		<!-- plugins -->
+		<script src="js/vendor/jquery.cookie.js"></script>
+		<script src="js/switcher.js"></script>
+
+	</body>
+</html>
