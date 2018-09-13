@@ -4,7 +4,7 @@
             <!-- <img src="images/person.jpg" alt=""> --></div>
         <div class="container">
             <div class="row">
-                <div class="col-md-6"> <img src="images/half_image.jpg" alt=""> </div>
+            <div class="col-md-6"> <img src="{{asset("theme/images/decrochage.jpg")}}" alt=""> </div>
                 <!-- .col-* -->
                 <div class="col-md-6">
                     <h2 class="section_header">Our Mission</h2>

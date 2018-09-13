@@ -125,6 +125,11 @@ Border colors for elements in color section: rgba(255, 255, 255, 0.2)
 ** Bootstrap Overrides
 */
 /* columns with 20 and 40 percents width */
+/*Mes classes*/
+.orange{
+	background-image:url("../images/orange-aqua.png") ;
+}
+/*Fin de mes classes*/
 .col-xs-20,
 .col-sm-20,
 .col-md-20,
@@ -4554,14 +4559,16 @@ header [class*="col-"],
 .image_cover,
 .background_cover,
 .parallax {
-	background-size: cover;
+	background-repeat:no-repeat;
 }
+
 
 .background_cover {
 	background-position: center;
 }
 
 .image_cover {
+	
 	display: block;
 	position: absolute;
 	width: 50%;
@@ -4589,6 +4596,7 @@ header [class*="col-"],
 
 @media (max-width: 991px) {
 	.image_cover {
+		right: 0;
 		height: 0;
 		padding-bottom: 66%;
 		margin-bottom: -30px;
@@ -7059,7 +7067,8 @@ body.boxed {
 }
 
 .page_header {
-	transition: background 0.2s ease-in-out 0s, margin 0.6s ease-in-out 0s;
+	transition: background 0.2s ease-in-out 0s,
+ margin 0.6s ease-in-out 0s;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -7093,7 +7102,8 @@ body.boxed {
 	.page_header.section_padding_25 [class*="container"] {
 		padding-top: 25px;
 		padding-bottom: 25px;
-		transition: padding-top 0.2s linear 0s, padding-bottom 0.2s linear 0s;
+		transition: padding-top 0.2s linear 0s,
+ padding-bottom 0.2s linear 0s;
 	}
 
 	.page_header.section_padding_25.affix [class*="container"] {

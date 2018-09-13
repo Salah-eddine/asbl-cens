@@ -11,15 +11,23 @@
 |
 */
 
-Route::get('/', function () {
-    return view('front.home.index');
-});
+Route::get('/','FrontController@accueil')->name("homePage");
 Route::get('/action', function () {
     return view('front.action.index');
 });
-Route::get('/services', function(){
-    return view("front.services.index");
+Route::get('/activite', function(){
+    return view("front.activite.index");
 });
+Route::get('/event', function(){
+    return view("front.event.index");
+});
+Route::get('/galerie', function(){
+    return view("front.galerie.index");
+});
+Route::get('/horaire', function(){
+    return view("front.horaire.index");
+});
+
 Auth::routes();
 Route::resource("/admin/citation","CitationController");
 Route::resource('/admin/inscription','InscriptionController');
