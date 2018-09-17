@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+ @extends('adminlte::page')
 
 @section('title', 'AdminLTE')
 
@@ -48,5 +48,21 @@
               
 
         <button type="submit" class="btn btn-primary mt-4">Submit</button>
+        <div class="container">
+
+                <h1>Laravel Bootstrap Datepicker</h1>
+            
+                <input class="date form-control" type="text">
+            
+            </div>
       </form>
+      <script type="text/javascript">
+
+        $('.date').datepicker({  
+    
+           format: 'mm-dd-yyyy'
+    
+         });  
+    
+    </script>  
 @stop

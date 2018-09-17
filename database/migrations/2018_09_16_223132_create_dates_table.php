@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCarousselsTable extends Migration
+class CreateDatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateCarousselsTable extends Migration
      */
     public function up()
     {
-        Schema::create('caroussels', function (Blueprint $table) {
+        Schema::create('dates', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string("nom",50);
-            $table->text("image");
         });
     }
 
@@ -28,6 +26,6 @@ class CreateCarousselsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('caroussels');
+        Schema::dropIfExists('dates');
     }
 }

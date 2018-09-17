@@ -29,7 +29,7 @@
                     <td class="d-flex">
                         <a class=" mx-2 btn btn-primary text-wite" href="{{route("caroussel.show",["caroussel"=>$caroussel->id])}}">Voir</a>
                         <a class=" mx-2 btn btn-success" href="{{route("caroussel.edit",["caroussel"=>$caroussel->id])}}">Modifiez</a>
-                        <form method="POST" style="width:min-content" caroussel="{{route("caroussel.destroy",["caroussel"=>$caroussel->id])}}">
+                        <form method="POST" style="width:min-content" action="{{route("caroussel.destroy",["caroussel"=>$caroussel->id])}}">
                             @method("DELETE")
                             @csrf
                             <button type="submit" class="btn btn-danger">Suprrimé</button>

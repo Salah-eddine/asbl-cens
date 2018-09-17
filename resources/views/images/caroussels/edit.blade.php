@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-<form method="POST" action="{{route("action.update",["action"=>$action->id])}}" enctype="multipart/form-data" novalidate>
+<form method="POST" action="{{route("caroussel.update",["caroussel"=>$caroussel->id])}}" enctype="multipart/form-data" novalidate>
 @method("PATCH")
   @csrf
   Image
@@ -21,17 +21,17 @@
             </div>
         </div>
         <div class="form-group w-50">
-                <label for="exampleInputEmail1">etiquette</label>
-                @if ($errors->has("etiquette"))
+                <label for="exampleInputEmail1">nom</label>
+                @if ($errors->has("nom"))
                 <div class="alert alert-danger">
                     <ul>
-                        @foreach ($errors->get("etiquette") as $error)
+                        @foreach ($errors->get("nom") as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
             @endif
-            <input class="form-control" value="{{old("etiquette")}}" placeholder="etiquette" type="text" name="etiquette" id="">
+            <input class="form-control" value="{{old("nom")}}" placeholder="nom" type="text" name="nom" id="">
         </div>
   
        

@@ -80,7 +80,7 @@ class CarousselController extends Controller
      */
     public function edit(Caroussel $caroussel)
     {
-        //
+        return view("images.caroussels.edit",compact("caroussel"));
     }
 
     /**
@@ -92,7 +92,28 @@ class CarousselController extends Controller
      */
     public function update(Request $request, Caroussel $caroussel)
     {
-        //
+       $del =   [
+                "imageName" => $caroussel->image,
+                "disk2" => "imageCaroussel",
+          ];
+          $arg = [
+            "request"=>$request->image,
+            "disk2"=>"imageCaroussel",
+            "x"=>1351,
+            "y"=>562,
+        ];
+        if($request->image != null)
+        {
+            $caroussel->image = $this->imageManager->imageStore($arg);
+        }
+        if($request->nom != null)
+        {
+            $caroussel->nom = $request->nom;
+        }
+        if($caroussel->save())
+        {
+            return redirect()->route("caroussel.index");
+        }
     }
 
     /**
@@ -103,6 +124,11 @@ class CarousselController extends Controller
      */
     public function destroy(Caroussel $caroussel)
     {
-        //
+        $del =   [
+            "imageName" => $caroussel->image,
+            "disk2" => "imageCaroussel",
+      ];
+      $caroussel->delete();
+      return redirect()->route("caroussel.index");
     }
 }

@@ -46,8 +46,8 @@ class ImageActionController extends Controller
         $arg = [
             "request"=>$request->image,
             "disk2"=>"imageAction",
-            "x"=>500,
-            "y"=>323,
+            "x"=>600,
+            "y"=>423,
         ];
         $action = new ImageAction;
         $action->image = $this->imageManager->imageStore($arg);

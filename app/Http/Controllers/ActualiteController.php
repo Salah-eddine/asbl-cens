@@ -47,8 +47,8 @@ class ActualiteController extends Controller
         $arg = [
             "request" =>$request->image,
             "disk2"=> "imageActualite",
-            "x" => 194,
-            "y" => 148,
+            "x" => 340,
+            "y" => 174,
         ];
         $actualite->titre = $request->titre;
         $actualite->description= $request->description;
@@ -94,8 +94,8 @@ class ActualiteController extends Controller
         $arg = [
             "request" =>$request->image,
             "disk2"=> "imageActualite",
-            "x" => 194,
-            "y" => 148,
+            "x" => 340,
+            "y" => 174,
         ];
       $del =   [
             "imageName" => $actualite->image,
